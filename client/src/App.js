@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useRef, useState, useEffect } from "react";
+import logo from "./logo.svg";
+import "./App.css";
 
 function App() {
+  const [xCor, setXCor] = useState(0);
+  const [yCor, setYCor] = useState(0);
+
+  const getXY = (el) => {
+    setXCor(el.screenX)
+    setYCor(el.screenY)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="App" onMouseDown={getXY}>
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <p>
+            x coordinate: {xCor}
+            <br></br>
+            y coordinate: {yCor}
+          </p>
+        </header>
+      </div>
+      <p>
+        x coordinate: {xCor} 
+        <br></br>
+        y coordinate: {yCor}
+      </p>
+    </>
   );
 }
 
