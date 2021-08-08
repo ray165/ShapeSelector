@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 
 function App() {
+  const [run, setRun] = useState(false)
   const [xCor, setXCor] = useState(0);
   const [yCor, setYCor] = useState(0);
 
@@ -11,9 +12,25 @@ function App() {
     setYCor(el.screenY)
   }
 
+  useEffect(() => {
+    // effect 
+    setXCor(run.screenX)
+    setYCor(run.screenY)
+    return () => {
+      // cleanup 
+      setRun(false)
+    }
+  }, [run])
+
   return (
     <>
-      <div className="App" onMouseDown={getXY}>
+      <div className="App" 
+        onMouseDown={(el) => {
+            setRun(el)
+          }
+        }
+        onMouseUp={() => setRun(false)}
+      >
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
