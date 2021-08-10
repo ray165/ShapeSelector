@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import Board from "./components/board"
 
 function App() {
   const [run, setRun] = useState(false)
@@ -38,6 +39,7 @@ function App() {
             <br></br>
             y coordinate: {yCor}
           </p>
+          <Board />
         </header>
       </div>
       <p>
