@@ -26,13 +26,13 @@ function App() {
   return (
     <>
       <div className="App" 
-        onMouseDown={(el) => {
-            setRun(el)
-          }
-        }
-        onMouseUp={() => setRun(false)}
+        // onMouseDown={(el) => {
+        //     setRun(el)
+        //   }
+        // }
+        // onMouseUp={() => setRun(false)}
       >
-        <header className="App-header">
+        {/* <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
             x coordinate: {xCor}
@@ -40,13 +40,10 @@ function App() {
             y coordinate: {yCor}
           </p>
           <Board />
-        </header>
+        </header> */}
+
+        <Board />
       </div>
-      <p>
-        x coordinate: {xCor} 
-        <br></br>
-        y coordinate: {yCor}
-      </p>
     </>
   );
 }
