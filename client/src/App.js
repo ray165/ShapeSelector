@@ -1,27 +1,27 @@
 import React, { useRef, useState, useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import Board from "./components/board"
+import Board from "./components/board.js"
 
 function App() {
-  const [run, setRun] = useState(false)
-  const [xCor, setXCor] = useState(0);
-  const [yCor, setYCor] = useState(0);
+  // const [run, setRun] = useState(false)
+  // const [xCor, setXCor] = useState(0);
+  // const [yCor, setYCor] = useState(0);
 
-  const getXY = (el) => {
-    setXCor(el.screenX)
-    setYCor(el.screenY)
-  }
+  // const getXY = (el) => {
+  //   setXCor(el.screenX)
+  //   setYCor(el.screenY)
+  // }
 
-  useEffect(() => {
-    // effect 
-    setXCor(run.screenX)
-    setYCor(run.screenY)
-    return () => {
-      // cleanup 
-      setRun(false)
-    }
-  }, [run])
+  // useEffect(() => {
+  //   // effect 
+  //   setXCor(run.screenX)
+  //   setYCor(run.screenY)
+  //   return () => {
+  //     // cleanup 
+  //     setRun(false)
+  //   }
+  // }, [run])
 
   return (
     <>

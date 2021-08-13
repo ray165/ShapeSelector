@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import "./board.css";
+// import "./board.css";
 // from the guide https://blog.ranaemad.com/whiteboard-react-hooks-ckclrvccg0005fls16f1h80mc
 
 /**
@@ -8,6 +8,7 @@ import "./board.css";
  */
 function Board() {
   const canvasRef = useRef(null);
+  const boardRef = useRef(null);
   const [ctx, setCtx] = useState({});
   const [drawing, setDrawing] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -15,6 +16,8 @@ function Board() {
 
   useEffect(() => {
     let canv = canvasRef.current;
+    canv.width = boardRef.current.offsetWidth
+    canv.height = boardRef.current.offsetHeight
 
     let canvCtx = canv.getContext("2d"); //<canvas> HTML property
     canvCtx.lineJoin = "round";
@@ -62,7 +65,7 @@ function Board() {
 
 
   return (
-    <div className="board">
+    <div className="board" ref={boardRef}>
       <canvas
         ref={canvasRef}
         onMouseDown={handleMouseDown}
