@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-// import "./board.css";
+import "./board.css";
+import Controls from "./controls"
 // from the guide https://blog.ranaemad.com/whiteboard-react-hooks-ckclrvccg0005fls16f1h80mc
 
 /**
@@ -65,6 +66,8 @@ function Board() {
 
 
   return (
+    <>
+    <Controls />
     <div className="board" ref={boardRef}>
       <canvas
         ref={canvasRef}
@@ -73,6 +76,7 @@ function Board() {
         onMouseMove={handleMouseMove}
       />
     </div>
+    </>
   );
 }
 

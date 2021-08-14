@@ -1,0 +1,6 @@
+.controlBar {
+    display: flex;
+    background-color: lightpink;
+    justify-content: center;
+    align-items: center;
+}

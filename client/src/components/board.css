@@ -1,16 +1,17 @@
-/* .board {
+.board {
   background-color: white;
   cursor: crosshair;
   margin: 0 auto;
   position: relative;
-  width: 100%;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
   flex: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-} */
+}
 
 
 canvas {
