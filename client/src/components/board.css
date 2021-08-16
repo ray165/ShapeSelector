@@ -9,10 +9,14 @@
   flex: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center;
+  align-items: center; */
 }
 
+#recDiv {
+  border: 7px dotted lightslategray;
+  position: absolute;
+}
 
 canvas {
     width: 100vw;

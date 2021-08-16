@@ -10,8 +10,12 @@ import Controls from "./controls"
 function Board() {
   const canvasRef = useRef(null);
   const boardRef = useRef(null);
+  const recDivRef = useRef(null);
+  const [drawMode, setDrawMode] = useState(false); // passed to controls
+  const [clear, setClear] = useState(false); // pased to controls
+  const [recMode, setRecMode] = useState(false); // rectangle selector i.e. draws a rectangle
   const [ctx, setCtx] = useState({});
-  const [drawing, setDrawing] = useState(false);
+  const [drawing, setDrawing] = useState(false); // the action of drawing
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [canvasOffset, setCanvasOffset] = useState({ x: 0, y: 0 });
 
@@ -47,13 +51,28 @@ function Board() {
 
   function handleMouseUp() {
     setDrawing(false);
+    if (recDivRef.current.hidden = 0) {
+      recDivRef.current.hideen = 1 // hide it again on mouse release
+    }
   }
 
   function handleMouseMove(e) {
     let mousex = e.clientX - canvasOffset.x;
     let mousey = e.clientY - canvasOffset.y;
-    console.log("running")
-    if (drawing) {
+    console.log("moving", "Recmode is", recMode, "Stats", position, mousex, mousey)
+
+    if (drawing && recMode) {
+      ctx.strokeStyle = "#000000";
+      // So... when drawing a rectangle... it'll continuous DRAW on the screen.
+      // I only want it to finalize when i release the mouse
+      recDivRef.current.hidden = 0
+      recDivRef.current.left = position.x
+      recDivRef.current.top = position.y
+      recDivRef.current.width = mousex
+      recDivRef.current.height = mousey
+
+
+    } else if (drawing) {
       ctx.strokeStyle = "#000000";
       ctx.beginPath();
       ctx.moveTo(position.x, position.y);
@@ -67,8 +86,13 @@ function Board() {
 
   return (
     <>
-    <Controls />
+    <Controls 
+      setClear={setClear}
+      setRecMode={setRecMode}
+      setDrawMode={setDrawMode}
+    />
     <div className="board" ref={boardRef}>
+      <div id="recDiv" ref={recDivRef} hidden></div>
       <canvas
         ref={canvasRef}
         onMouseDown={handleMouseDown}
