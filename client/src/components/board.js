@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./board.css";
-import Controls from "./controls"
+import Controls from "./controls";
 // from the guide https://blog.ranaemad.com/whiteboard-react-hooks-ckclrvccg0005fls16f1h80mc
 
 /**
@@ -21,8 +21,8 @@ function Board() {
 
   useEffect(() => {
     let canv = canvasRef.current;
-    canv.width = boardRef.current.offsetWidth
-    canv.height = boardRef.current.offsetHeight
+    canv.width = boardRef.current.offsetWidth;
+    canv.height = boardRef.current.offsetHeight;
 
     let canvCtx = canv.getContext("2d"); //<canvas> HTML property
     canvCtx.lineJoin = "round";
@@ -32,8 +32,8 @@ function Board() {
     setCtx(canvCtx);
 
     if (clear) {
-      setCtx({})
-      setClear(false)
+      setCtx({});
+      setClear(false);
     }
 
     let offSet = canv.getBoundingClientRect(); // Element API... returns the size & position relative to the viewport
@@ -43,40 +43,46 @@ function Board() {
     };
   }, [ctx, clear]);
 
-
   function handleMouseDown(e) {
     // setDrawing(true);
     setPosition({
       x: parseInt(e.clientX - canvasOffset.x),
       y: parseInt(e.clientY - canvasOffset.y),
     });
-    console.log("down clicked!", drawing);
     setDrawing(true);
   }
 
   function handleMouseUp() {
     setDrawing(false);
-    if (recDivRef.current.hidden = 0) {
-      recDivRef.current.hideen = 1 // hide it again on mouse release
+    if ((recDivRef.current.hidden = 0)) {
+      recDivRef.current.hidden = 1; // hide it again on mouse release
+      console.log("hide the div", recDivRef.current.hidden)
     }
   }
 
   function handleMouseMove(e) {
     let mousex = e.clientX - canvasOffset.x;
     let mousey = e.clientY - canvasOffset.y;
-    console.log("moving", "Recmode is", recMode, "Stats", position, mousex, mousey)
+    console.log(
+      "moving",
+      "Recmode is",
+      recMode,
+      "Stats",
+      position,
+      mousex,
+      mousey
+    );
 
     if (drawing && recMode) {
       ctx.strokeStyle = "#000000";
       // So... when drawing a rectangle... it'll continuous DRAW on the screen.
       // I only want it to finalize when i release the mouse
-      recDivRef.current.hidden = 0
-      recDivRef.current.left = position.x
-      recDivRef.current.top = position.y
-      recDivRef.current.width = mousex
-      recDivRef.current.height = mousey
-
-
+      recDivRef.current.hidden = false;
+      recDivRef.current.style.left = `${position.x}px`;
+      recDivRef.current.style.top = `${position.y}px`;
+      recDivRef.current.style.width = `${mousex}px`;
+      recDivRef.current.style.height = `${mousey}px`;
+      console.log(recDivRef.current.getBoundingClientRect(), "Hidden status", recDivRef.current.hidden)
     } else if (drawing) {
       ctx.strokeStyle = "#000000";
       ctx.beginPath();
@@ -87,24 +93,24 @@ function Board() {
     setPosition({ x: mousex, y: mousey });
   }
 
-
-
   return (
     <>
-    <Controls 
-      setClear={setClear}
-      setRecMode={setRecMode}
-      setDrawMode={setDrawMode}
-    />
-    <div className="board" ref={boardRef}>
-      <div id="recDiv" ref={recDivRef} hidden></div>
-      <canvas
-        ref={canvasRef}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        onMouseMove={handleMouseMove}
+      <Controls
+        setClear={setClear}
+        setRecMode={setRecMode}
+        setDrawMode={setDrawMode}
       />
-    </div>
+      <div className="board" ref={boardRef}>
+        <div id="recDiv" ref={recDivRef} ></div>
+        <canvas
+          ref={canvasRef}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+        >
+
+        </canvas>
+      </div>
     </>
   );
 }
