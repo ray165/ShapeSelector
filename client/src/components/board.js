@@ -14,6 +14,7 @@ function Board() {
   const [drawMode, setDrawMode] = useState(false); // passed to controls
   const [clear, setClear] = useState(false); // pased to controls
   const [recMode, setRecMode] = useState(false); // rectangle selector i.e. draws a rectangle
+  const [hidden, setHidden] = useState(true) // hidden rectangle, conditional rendering
   const [ctx, setCtx] = useState({});
   const [drawing, setDrawing] = useState(false); // the action of drawing
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -48,15 +49,16 @@ function Board() {
     setPosition({
       x: parseInt(e.clientX - canvasOffset.x),
       y: parseInt(e.clientY - canvasOffset.y),
+      // x: parseInt(e.clientX),
+      // y: parseInt(e.clientY),
     });
     setDrawing(true);
   }
 
   function handleMouseUp() {
     setDrawing(false);
-    if ((recDivRef.current.hidden = 0)) {
-      recDivRef.current.hidden = 1; // hide it again on mouse release
-      console.log("hide the div", recDivRef.current.hidden)
+    if (!hidden) {
+      setHidden(true); // hide rec again on mouse release
     }
   }
 
@@ -75,22 +77,33 @@ function Board() {
 
     if (drawing && recMode) {
       ctx.strokeStyle = "#000000";
-      // So... when drawing a rectangle... it'll continuous DRAW on the screen.
-      // I only want it to finalize when i release the mouse
-      recDivRef.current.hidden = false;
-      recDivRef.current.style.left = `${position.x}px`;
-      recDivRef.current.style.top = `${position.y}px`;
-      recDivRef.current.style.width = `${mousex}px`;
-      recDivRef.current.style.height = `${mousey}px`;
-      console.log(recDivRef.current.getBoundingClientRect(), "Hidden status", recDivRef.current.hidden)
+      var xTLeft = Math.min(mousex, position.x + canvasOffset.x);
+      var width = Math.max(mousex, position.x + canvasOffset.x) - xTLeft; // offset from top left of rect to mouse pointer or vice versa
+      var yTLeft = Math.min(mousey, position.y + canvasOffset.y);
+      var height = Math.max(mousey, position.y + canvasOffset.y) - yTLeft;
+
+      setHidden(false);
+      if (!hidden) {
+        // recDivRef.current.style.left = `${position.x}px`;
+        // recDivRef.current.style.top = `${position.y}px`;
+        // recDivRef.current.style.width = e.screenX + 'px' //`${mousex}px`;
+        // recDivRef.current.style.height = e.screenY + 'px' //`${mousey}px`;
+        recDivRef.current.style.left = `${xTLeft}px`;
+        recDivRef.current.style.top = `${yTLeft}px`;
+        recDivRef.current.style.width = `${width}px`;
+        recDivRef.current.style.height = `${height}px`;
+        console.log(recDivRef.current.getBoundingClientRect(), "Hidden status", recDivRef.current.hidden)
+      }
+
     } else if (drawing) {
       ctx.strokeStyle = "#000000";
       ctx.beginPath();
       ctx.moveTo(position.x, position.y);
       ctx.lineTo(mousex, mousey);
       ctx.stroke();
+      setPosition({ x: mousex, y: mousey }); //change the last mouse position
     }
-    setPosition({ x: mousex, y: mousey });
+    
   }
 
   return (
@@ -100,15 +113,18 @@ function Board() {
         setRecMode={setRecMode}
         setDrawMode={setDrawMode}
       />
-      <div className="board" ref={boardRef}>
-        <div id="recDiv" ref={recDivRef} ></div>
-        <canvas
-          ref={canvasRef}
+      <div className="board" 
+          ref={boardRef}           
           onMouseDown={handleMouseDown}
           onMouseUp={handleMouseUp}
-          onMouseMove={handleMouseMove}
+          onMouseMove={handleMouseMove}>
+        {!hidden && <div id="recDiv" ref={recDivRef} ></div>}
+        <canvas
+          ref={canvasRef}
+          // onMouseDown={handleMouseDown}
+          // onMouseUp={handleMouseUp}
+          // onMouseMove={handleMouseMove}
         >
-
         </canvas>
       </div>
     </>
