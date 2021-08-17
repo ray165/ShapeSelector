@@ -31,12 +31,17 @@ function Board() {
     // canvCtx.fillStyle = "#FF0000"
     setCtx(canvCtx);
 
+    if (clear) {
+      setCtx({})
+      setClear(false)
+    }
+
     let offSet = canv.getBoundingClientRect(); // Element API... returns the size & position relative to the viewport
     setCanvasOffset({ x: parseInt(offSet.left), y: parseInt(offSet.top) });
     return () => {
       setCtx({});
     };
-  }, [ctx]);
+  }, [ctx, clear]);
 
 
   function handleMouseDown(e) {
