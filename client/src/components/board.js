@@ -8,13 +8,15 @@ import Controls from "./controls";
  * @returns board
  */
 function Board() {
-  const canvasRef = useRef(null);
-  const boardRef = useRef(null);
-  const recDivRef = useRef(null);
+  const [canvasRef, boardRef, recDivRef] = [
+    useRef(null),
+    useRef(null),
+    useRef(null),
+  ];
   const [drawMode, setDrawMode] = useState(false); // passed to controls
   const [clear, setClear] = useState(false); // pased to controls
   const [recMode, setRecMode] = useState(false); // rectangle selector i.e. draws a rectangle
-  const [hidden, setHidden] = useState(true) // hidden rectangle, conditional rendering
+  const [hidden, setHidden] = useState(true); // hidden rectangle, conditional rendering
   const [ctx, setCtx] = useState({});
   const [drawing, setDrawing] = useState(false); // the action of drawing
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -56,10 +58,18 @@ function Board() {
   }
 
   function handleMouseUp() {
-    setDrawing(false);
+
     if (!hidden) {
+      // Draw rec on release
+      ctx.beginPath();
+      ctx.lineWidth = "3";
+      ctx.strokeStyle = "red";
+      let recDraw = recDivRef.current.getBoundingClientRect();
+      ctx.rect(parseInt(recDraw.left) - canvasOffset.x, parseInt(recDraw.top) - canvasOffset.y, parseInt(recDraw.width), parseInt(recDraw.height))
+      ctx.stroke()
       setHidden(true); // hide rec again on mouse release
     }
+    setDrawing(false);
   }
 
   function handleMouseMove(e) {
@@ -76,25 +86,23 @@ function Board() {
     );
 
     if (drawing && recMode) {
-      ctx.strokeStyle = "#000000";
-      var xTLeft = Math.min(mousex, position.x + canvasOffset.x);
-      var width = Math.max(mousex, position.x + canvasOffset.x) - xTLeft; // offset from top left of rect to mouse pointer or vice versa
-      var yTLeft = Math.min(mousey, position.y + canvasOffset.y);
-      var height = Math.max(mousey, position.y + canvasOffset.y) - yTLeft;
+      let xTLeft = Math.min(mousex, position.x + canvasOffset.x);
+      let width = Math.max(mousex, position.x + canvasOffset.x) - xTLeft; // offset from top left of rect to mouse pointer or vice versa
+      let yTLeft = Math.min(mousey, position.y + canvasOffset.y);
+      let height = Math.max(mousey, position.y + canvasOffset.y) - yTLeft;
 
       setHidden(false);
       if (!hidden) {
-        // recDivRef.current.style.left = `${position.x}px`;
-        // recDivRef.current.style.top = `${position.y}px`;
-        // recDivRef.current.style.width = e.screenX + 'px' //`${mousex}px`;
-        // recDivRef.current.style.height = e.screenY + 'px' //`${mousey}px`;
         recDivRef.current.style.left = `${xTLeft}px`;
         recDivRef.current.style.top = `${yTLeft}px`;
         recDivRef.current.style.width = `${width}px`;
         recDivRef.current.style.height = `${height}px`;
-        console.log(recDivRef.current.getBoundingClientRect(), "Hidden status", recDivRef.current.hidden)
+        console.log(
+          recDivRef.current.getBoundingClientRect(),
+          "Hidden status",
+          recDivRef.current.hidden
+        );
       }
-
     } else if (drawing) {
       ctx.strokeStyle = "#000000";
       ctx.beginPath();
@@ -103,7 +111,6 @@ function Board() {
       ctx.stroke();
       setPosition({ x: mousex, y: mousey }); //change the last mouse position
     }
-    
   }
 
   return (
@@ -113,19 +120,15 @@ function Board() {
         setRecMode={setRecMode}
         setDrawMode={setDrawMode}
       />
-      <div className="board" 
-          ref={boardRef}           
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-          onMouseMove={handleMouseMove}>
-        {!hidden && <div id="recDiv" ref={recDivRef} ></div>}
-        <canvas
-          ref={canvasRef}
-          // onMouseDown={handleMouseDown}
-          // onMouseUp={handleMouseUp}
-          // onMouseMove={handleMouseMove}
-        >
-        </canvas>
+      <div
+        className="board"
+        ref={boardRef}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
+      >
+        {!hidden && <div id="recDiv" ref={recDivRef}></div>}
+        <canvas ref={canvasRef}></canvas>
       </div>
     </>
   );
