@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
-import logo from "./logo.svg";
+import React from "react";
+// import logo from "./logo.svg";
 import "./App.css";
 import Board from "./components/board.js"
 

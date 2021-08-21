@@ -103,7 +103,7 @@ function Board() {
           recDivRef.current.hidden
         );
       }
-    } else if (drawing) {
+    } else if (drawing && drawMode) {
       ctx.strokeStyle = "#000000";
       ctx.beginPath();
       ctx.moveTo(position.x, position.y);

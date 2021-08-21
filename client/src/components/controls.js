@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import LayersClearIcon from "@material-ui/icons/LayersClear";
 import IconButton from "@material-ui/core/IconButton";
 import CreateIcon from "@material-ui/icons/Create";
@@ -8,7 +8,7 @@ import "./controls.css";
 export default function Controls(props) {
   const drawRef = useRef(null);
   const recRef = useRef(null);
-  const [color, setColor] = useState("black");
+  // const [color, setColor] = useState("black");
   // useRef for each button so that i can change their style.
 
   const { setClear, setRecMode, setDrawMode } = props;
