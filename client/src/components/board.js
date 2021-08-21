@@ -44,7 +44,7 @@ function Board() {
     return () => {
       setCtx({});
     };
-  }, [ctx, clear]);
+  }, [ctx, clear, boardRef, canvasRef]);
 
   function handleMouseDown(e) {
     // setDrawing(true);
